@@ -1,0 +1,49 @@
+body {
+    background-color: whitesmoke;
+}
+
+h1 {
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 4em;
+    background-color: green;
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nav a {
+    text-decoration: none;
+    color: whitesmoke;
+    padding: 0.5rem;
+    margin: 0 1rem;
+    border: 1px solid whitesmoke;
+}
+
+
+/**
+ * CSS sprite for a dice with six faces.
+ */
+ .dice-sprite {
+    display: inline-block;
+    padding: 0;
+    margin: 0 4px 0 0;
+    width: 32px;
+    height: 32px;
+    background: url(dice-faces.jpg) no-repeat;
+}
+
+.dice-sprite.dice-1 { background-position: -160px 0; }
+.dice-sprite.dice-2 { background-position: -128px 0; }
+.dice-sprite.dice-3 { background-position: -96px 0; }
+.dice-sprite.dice-4 { background-position: -64px 0; }
+.dice-sprite.dice-5 { background-position: -32px 0; }
+.dice-sprite.dice-6 { background-position: 0 0; }
