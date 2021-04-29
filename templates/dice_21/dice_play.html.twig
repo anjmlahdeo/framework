@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+{{ message }}
+
+{% if result %}
+    <h3>{{ result }}</h3>
+{% endif %}
+
+{# Render rolled dices #}
+<div class="dice-view">
+    {% for value in diceValues %}
+        <i class="dice-sprite dice-{{ value }}"></i>
+    {% endfor %}
+</div>
+
+<h3>Total: {{ sum }}</h3>
+
+{% if result %}
+    {# Reset button #}
+    {{ form(resetForm) }}
+{% else %}
+    <div class="controls">
+        {# Roll and stop buttons #}
+        {{ form(rollForm) }}
+        {{ form(stopForm) }}
+    </div>
+{% endif %}
+
+{% endblock %}
