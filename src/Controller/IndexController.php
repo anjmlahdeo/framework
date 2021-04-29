@@ -4,6 +4,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Form\Type\GameType;
+use Rois\Dice\Game;
 
 class IndexController extends AbstractController
 {
@@ -21,10 +26,22 @@ class IndexController extends AbstractController
     /**
      * @Route("/dice", name="dice_index")
      */
-    public function dice(): Response
-    {
-        return $this->render('dice.html.twig', [
+    public function dice(Request $request): Response
+    { 
+        $form = $this->createForm(GameType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dices = $form->getData();
+
+            return $this->redirectToRoute('dice_play');
+        }
+
+        // $this->session->set("callable", serialize(new Game()));
+        return $this->render('dice_21/dice_index.html.twig', [
             'title' => 'Dice 21',
+            "message" => "Select the number of dices to use",
+            'form' => $form->createView(),
         ]);
     }
 
@@ -33,7 +50,7 @@ class IndexController extends AbstractController
      */
     public function yatzy(): Response
     {
-        return $this->render('yatzy.html.twig', [
+        return $this->render('yatzy/yatzy.html.twig', [
             'title' => 'Yatzy',
         ]);
     }
