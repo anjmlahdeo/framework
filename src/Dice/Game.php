@@ -34,11 +34,11 @@ class Game
         $this->diceHand->roll();
         $this->sum = $testSum ? $testSum : $this->sum + $this->diceHand->sum();
         if ($this->sum > 21) {
+            $this->winner = "computer";
             $this->result = "You Lost!";
-            $this->saveRound("computer");
         } elseif ($this->sum === 21) {
+            $this->winner = "player";
             $this->result = "You win!";
-            $this->saveRound("player");
         }
         $this->rollCount += 1;
     }

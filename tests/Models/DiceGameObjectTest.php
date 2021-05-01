@@ -100,17 +100,4 @@ class DiceGameObjectTest extends TestCase
         $gameSum = $game->getSum();
         $this->assertEquals($calcSum, $gameSum);
     }
-
-    /**
-     * Test that $_SESSION is called and that rounds are reset.
-     */
-    public function testResetRound()
-    {
-        $_SESSION = [];
-        $_SESSION["player"] = 2;
-        $_SESSION["computer"] = 3;
-        $game = new Game(2);
-        $game->resetRounds();
-        $this->assertEmpty($_SESSION);
-    }
 }
