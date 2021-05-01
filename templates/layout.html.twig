@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% set current_path = app.request.get('_route') %}
     <div class="header">
         <div class="nav">
-            <a href="{{ path('index') }}">Home</a>
-            <a href="{{ path('dice_index') }}">Dice 21</a>
-            <a href="{{ path('yatzy_index') }}">Yatzy</a>
+            <a {{ current_path == 'index' ? 'class=selected' : "" }} href="{{ path('index') }}">Home</a>
+            <a {{ current_path in ['dice_index', 'dice_play'] ? 'class=selected' : "" }} href="{{ path('dice_index') }}">Dice 21</a>
+            <a {{ current_path == 'yatzy_index' ? 'class=selected' : "" }} href="{{ path('yatzy_index') }}">Yatzy</a>
         </div>
     </div>
     <div class="content">
