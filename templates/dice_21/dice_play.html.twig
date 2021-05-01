@@ -9,6 +9,9 @@
     <h3>{{ result }}</h3>
 {% endif %}
 
+<h3>Player: {{ playerScore ?? 0 }} Computer: {{ computerScore ?? 0 }}</h3>
+<a class="content-link" href="{{ path('reset_score') }}">Reset Score</a>
+
 {# Render rolled dices #}
 <div class="dice-view">
     {% for value in diceValues %}

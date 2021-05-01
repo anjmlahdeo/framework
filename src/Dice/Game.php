@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace Rois\Dice;
 
-use function Mos\Functions\{
-    renderView,
-    sendResponse,
-    redirectTo,
-    url
-};
-
 class Game
 {
 
@@ -18,6 +11,7 @@ class Game
     private int $sum = 0;
     private ?string $result = null;
     private int $rollCount = 0;
+    private ?string $winner = null;
 
     /**
      * Generates a new dicehand and makes the first roll.
@@ -71,13 +65,13 @@ class Game
         }
 
         if ($computerSum >= $this->sum && $computerSum <= 21) {
+            $this->winner = "computer";
             $this->result = "You lost! Computers score was: " . $computerSum;
-            $this->saveRound("computer");
             return;
         }
 
+        $this->winner = "player";
         $this->result = "You win! Computers score was: " . $computerSum;
-        $this->saveRound("player");
     }
 
     /**
@@ -118,31 +112,12 @@ class Game
     }
 
     /**
-     * Resets the round result counter.
-     * @return void
+     * Getter to retrieve the winner.
+     * @return string The winner.
      */
-    public function resetRounds(): void
+    public function getWinner()
     {
-        if (isset($_SESSION["player"])) {
-            unset($_SESSION["player"]);
-        }
-        if (isset($_SESSION["computer"])) {
-            unset($_SESSION["computer"]);
-        }
-    }
-
-    /**
-     * Saves the result of the played round to the session.
-     * @return void
-     */
-    public function saveRound(string $winner): void
-    {
-        if (isset($_SESSION[$winner])) {
-            $_SESSION[$winner] = $_SESSION[$winner] + 1;
-            return;
-        }
-        $_SESSION[$winner] = 1;
-        return;
+        return $this->winner;
     }
 
     /**

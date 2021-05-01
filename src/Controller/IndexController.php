@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,12 +28,18 @@ class IndexController extends AbstractController
      * @Route("/dice", name="dice_index")
      */
     public function dice(Request $request): Response
-    { 
+    {
         $form = $this->createForm(GameType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $dices = $form->getData();
+            $data = $form->getData();
+
+            $gameObj = new Game();
+            $gameObj->playGame($data['dices']);
+
+            $this->get('session')->set('callable', serialize($gameObj));
+            $this->get('session')->set('dices', $data['dices']);
 
             return $this->redirectToRoute('dice_play');
         }
@@ -52,6 +59,7 @@ class IndexController extends AbstractController
     {
         return $this->render('yatzy/yatzy.html.twig', [
             'title' => 'Yatzy',
+            'message' => 'Not implemented yet...'
         ]);
     }
 }
