@@ -12,9 +12,18 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Form\Type\RollType;
 use App\Form\Type\ResetType;
 use App\Form\Type\StopType;
-use Rois\Dice\Game;
+use Rois\Yatzy\YatzyGame;
 
-class Dice21Controller extends AbstractController
+class YatzyController extends AbstractController
 {
-    
+    /**
+     *
+     * @Route("/yatzy/play", name="yatzy_play", methods={"GET", "POST"})
+     */
+    public function play(Request $request): Response
+    {
+        return $this->render('yatzy/yatzy_play.html.twig', [
+            'title' => 'Yatzy',
+        ]);
+    }
 }

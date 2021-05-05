@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\Type\GameType;
+use App\Form\Type\PlayType;
 use Rois\Dice\Game;
+use Rois\Yatzy\YatzyGame;
 use App\Entity\Book;
 
 class IndexController extends AbstractController
@@ -56,11 +58,24 @@ class IndexController extends AbstractController
     /**
      * @Route("/yatzy", name="yatzy_index")
      */
-    public function yatzy(): Response
+    public function yatzy(Request $request): Response
     {
+        $form = $this->createForm(PlayType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $yatzyObj = new YatzyGame();
+            $this->get("session")->set("callable", serialize($yatzyObj));
+
+            return $this->redirectToRoute('yatzy_play');
+        }
+
         return $this->render('yatzy/yatzy.html.twig', [
             'title' => 'Yatzy',
-            'message' => 'Not implemented yet...'
+            'message' => 'Traditional Yatzy game.',
+            'form' => $form->createView(),
         ]);
     }
 
