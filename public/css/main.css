@@ -89,6 +89,15 @@ a.selected {
     display: none;
 }
 
+.book-container {
+    padding: 1rem;
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+}
+
 
 /**
  * CSS sprite for a dice with six faces.
