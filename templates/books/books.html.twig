@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    {% for book in books %}
+        <div class="book-container">
+            <h3>{{ book.title }}</h3>
+            <p><b>ISBN:</b> {{ book.isbn }}</p>
+            <p><b>Author:</b> {{ book.author }}</p>
+            <img src={{ book.image }}>
+        </div>
+    {% endfor %}
+{% endblock %}
