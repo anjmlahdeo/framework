@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\Type\GameType;
 use Rois\Dice\Game;
+use App\Entity\Book;
 
 class IndexController extends AbstractController
 {
@@ -60,6 +61,19 @@ class IndexController extends AbstractController
         return $this->render('yatzy/yatzy.html.twig', [
             'title' => 'Yatzy',
             'message' => 'Not implemented yet...'
+        ]);
+    }
+
+    /**
+     * @Route("/books", name="books_index")
+     */
+    public function books(): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Book::class);
+        $books = $repository->findAll();
+        return $this->render('books/books.html.twig', [
+            'title' => 'Books',
+            'books' => $books
         ]);
     }
 }
