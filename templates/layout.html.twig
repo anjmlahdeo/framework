@@ -7,6 +7,7 @@
             <a {{ current_path == 'index' ? 'class=selected' : "" }} href="{{ path('index') }}">Home</a>
             <a {{ current_path in ['dice_index', 'dice_play'] ? 'class=selected' : "" }} href="{{ path('dice_index') }}">Dice 21</a>
             <a {{ current_path == 'yatzy_index' ? 'class=selected' : "" }} href="{{ path('yatzy_index') }}">Yatzy</a>
+            <a {{ current_path == 'book_index' ? 'class=selected' : "" }} href="{{ path('books_index') }}">Books</a>
         </div>
     </div>
     <div class="content">
