@@ -13,6 +13,8 @@ use App\Form\Type\RollType;
 use App\Form\Type\ResetType;
 use App\Form\Type\StopType;
 use Rois\Dice\Game;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Score;
 
 class Dice21Controller extends AbstractController
 {
@@ -43,7 +45,9 @@ class Dice21Controller extends AbstractController
             return $this->redirectToRoute('dice_index');
         }
         $winner = $gameObj->getWinner();
-        $this->handleWinner($winner);
+        if ($winner) {
+            $this->handleWinner($winner);
+        }
 
         $playerScore = $this->get("session")->get("player");
         $computerScore = $this->get("session")->get("computer");
@@ -87,6 +91,17 @@ class Dice21Controller extends AbstractController
 
     private function handleWinner($winner): void
     {
+        $entityManager = $this->getDoctrine()->getManager();
+        $newWinner = $winner;
+
+        $score = new Score();
+        $score->setName($newWinner);
+
+        $entityManager->persist($score);
+        $entityManager->flush();
+
+        //echo "Created Product with ID " . $product->getId() . "\n";
+        /*
         //Add to score for winner if available
         if ($winner) {
             $storedScore = intval($this->get("session")->get($winner));
@@ -97,7 +112,7 @@ class Dice21Controller extends AbstractController
             }
             $this->get("session")->set($winner, 1);
             return;
-        }
+        }*/
     }
 
     private function handleRollForm(Request $request, $rollForm, $gameObj)
