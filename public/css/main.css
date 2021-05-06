@@ -117,3 +117,24 @@ a.selected {
 .dice-sprite.dice-4 { background-position: -64px 0; }
 .dice-sprite.dice-5 { background-position: -32px 0; }
 .dice-sprite.dice-6 { background-position: 0 0; }
+
+.dices form {
+    display: flex;
+    flex-direction: row;
+}
+
+.dice-div {
+    width: 30px;
+    margin: 1em;
+    cursor: pointer;
+}
+
+.select-dice-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-game-btn {
+    margin-top: 2em;
+}

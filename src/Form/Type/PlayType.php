@@ -12,6 +12,6 @@ class PlayType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('play', SubmitType::class, ['label' => 'Play']);
+        ->add('start', SubmitType::class, ['label' => 'Play']);
     }
 }

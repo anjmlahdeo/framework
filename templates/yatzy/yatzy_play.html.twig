@@ -2,4 +2,69 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
+
+    {{ include('yatzy/result_table.html.twig') }}
+
+    {% if not endGame %}
+        <h2>Saved Dices (Click to remove)</h2>
+
+        <!-- Display dices saved by the user -->
+        <div class="dices">
+            {% if savedValues|length > 0 %}
+            <form id="saved-dices" action="{{ path('yatzy_controls') }}" method="post">
+                {% for index, value in savedValues %}
+                    <div class="dice-div">
+                        <input class="dice-sprite dice-{{ value }}" type="submit" value="" name="rem-{{ index }}">
+                    </div>
+                {% endfor %}
+            </form>
+        {% else %}
+            <p><em>None selected yet...</em></p>
+        {% endif %}   
+        </div>
+
+        <h2>Rolled Dices (Click dices to save)</h2>
+
+        <!-- Display dices from the last roll -->
+        {% if diceValues %}
+        <div class="dices">
+            <form id="dices" action="{{ path('yatzy_controls') }}" method="post">
+                {% for index, value in diceValues %}
+                    <div class="dice-div">
+                        <input class="dice-sprite dice-{{value}}" type="submit" value="" name="add-{{ index }}">
+                    </div>
+                {% endfor %}
+            </form>
+        </div>
+        {% endif %}
+    {% endif %}
+
+    {% if not end and not endGame %}
+        <!-- New roll button -->
+        <form method="POST" action="{{ path('yatzy_controls') }}">
+            <input type="submit" value="Roll" name="roll">
+        </form>
+    {% endif %}
+
+    {% if end %}
+        <!-- Save and continue button -->
+        <form method="POST" action="{{ path('yatzy_controls') }}">
+            <select name="save_position" id="save_result">
+                <option value="">Select target to store result</option>
+                {% for i in 1..6 %}
+                    <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Save and continue" name="save_result">
+        </form>
+    {% endif %}
+
+    {% if endGame %}
+        <form class="new-game-btn" method="POST" action="{{ path('yatzy_controls') }}">
+            <input type="submit" value="Play Again" name="new_game">
+        </form>
+    {% endif %}
+
+
+
 {% endblock %}

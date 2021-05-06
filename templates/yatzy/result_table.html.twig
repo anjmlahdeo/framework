@@ -1,0 +1,21 @@
+<table>
+<tr>
+    <td>Number</td>
+    <td>Score</td>
+</tr>
+<tr>
+{% for key, value in rounds %} 
+    <tr>
+        <td>{{ key }}</td>
+        <td>{{ value }}</td>
+    </tr>
+{% endfor %}
+<tr>
+    <td>Bonus:</td>
+    <td>{{ bonus == 0 ? "-" : bonus }}</td>
+</tr>
+<tr>
+    <td>Total:</td>
+    <td>{{ sum + bonus ?? "" }}</td>
+</tr>
+</table>
