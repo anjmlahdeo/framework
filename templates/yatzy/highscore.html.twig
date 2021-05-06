@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <table>
+        <tr>
+            <td><b>Name</b></td>
+            <td><b>Score</b></td>
+        </tr>
+        {% for score in highscores %}
+            <tr>
+                <td>{{ score.name }}</td>
+                <td>{{ score.score }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
