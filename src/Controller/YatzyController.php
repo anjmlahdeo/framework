@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Form\Type\PlayType;
 use App\Form\Type\RollType;
 use Rois\Yatzy\YatzyGame;
+use App\Entity\Player;
 
 class YatzyController extends AbstractController
 {
@@ -21,14 +22,28 @@ class YatzyController extends AbstractController
      */
     public function play(Request $request): Response
     {
-        $form = $this->createForm(PlayType::class);
+        $player = new Player();
+        $form = $this->createForm(PlayType::class, $player);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $playerData = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $currentPlayer = $entityManager->getRepository(Player::class)->findBy(array('name' => $playerData->getName()));
+            if (!$currentPlayer) {
+                $player = new Player();
+                $player->setName($playerData->getName());
+                $player->setScore(0);
+                $entityManager->persist($player);
+                $entityManager->flush();
+            }
+
             $yatzyObj = new YatzyGame();
             $yatzyObj->initGame();
             $yatzyObj->getCurrentRound()->roll();
+
             $this->get("session")->set("callable", serialize($yatzyObj));
+            $this->get("session")->set("name", $playerData->getName());
 
             return $this->redirectToRoute('yatzy_controls');
         }
@@ -36,6 +51,20 @@ class YatzyController extends AbstractController
             'title' => 'Yatzy',
             'message' => 'Traditional Yatzy game.',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     *
+     * @Route("/yatzy/highscore", name="yatzy_highscore", methods={"GET", "POST"})
+     */
+    public function highscore(): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Player::class);
+        $highscores = $repository->findAll();
+        return $this->render('yatzy/highscore.html.twig', [
+            'title' => 'Yatzy Highscores',
+            'highscores' => $highscores
         ]);
     }
 
@@ -60,21 +89,23 @@ class YatzyController extends AbstractController
             "rem-4" => 4
         ];
 
-        $gameObj = unserialize($this->get("session")->get("callable"));
-        if (isset($_POST["roll"])) {
+        $roll = $request->get("roll");
+        $saveResult = $request->get("save_result");
+        $newGame = $request->get("new_game");
+
+        if ($roll) {
             $gameObj->getCurrentRound()->roll();
-        } elseif (isset($_POST["save_result"])) {
-            echo("Save");
+        } elseif ($saveResult) {
             $gameObj->saveRound(intval($_POST["save_position"]));
             $gameObj->newRound();
             $gameObj->getCurrentRound()->roll();
-        } elseif (isset($_POST["new_game"])) {
-            $gameObj = new YatzyGame();
-            $gameObj->initGame();
+        } elseif ($newGame) {
+            return $this->redirectToRoute('yatzy_play');
         }
 
         foreach ($addRemove as $index => $value) {
-            if (isset($_POST[$index])) {
+            $post = $request->get($index);
+            if ($post === "") {
                 $func = explode("-", $index);
                 if ($func[0] === "add") {
                     $gameObj->getCurrentRound()->storeDices($value);
@@ -88,20 +119,23 @@ class YatzyController extends AbstractController
             }
         }
 
+        $this->checkEnd($gameObj);
+
         $this->get("session")->set("callable", serialize($gameObj));
-        return $this->redirectToRoute('yatzy_update');    
+        return $this->redirectToRoute('yatzy_update');
     }
 
     /**
      *
      * @Route("/yatzy/update", name="yatzy_update", methods={"GET", "POST"})
      */
-    public function update(Request $request): Response
+    public function update(): Response
     {
         $gameObj = unserialize($this->get("session")->get("callable"));
+        $playerName = $this->get("session")->get("player_name");
         $data = [
             "title" => "Yatzy",
-            "message" => "Hello, this is the dice page.",
+            "message" => "Hello, " . $playerName . " go ahead and play!",
             "rounds" => $gameObj->getRounds(),
             "diceValues" => $gameObj->getCurrentRound()->getDiceHand()->values(),
             "savedValues" => $gameObj->getCurrentRound()->getStoredDices(),
@@ -112,5 +146,28 @@ class YatzyController extends AbstractController
             "bonus" => $gameObj->getTotalScore() >= 63 ? 50 : 0
         ];
         return $this->render('yatzy/yatzy_play.html.twig', $data);
+    }
+
+    /**
+     * Checks if game is ended and if so prsists player score to database.
+     */
+    private function checkEnd($gameObj): void
+    {
+        if ($gameObj->checkEndGame()) {
+            $name = $this->get("session")->get("name");
+            $entityManager = $this->getDoctrine()->getManager();
+            $player = $entityManager->getRepository(Player::class)->findOneBy(array('name' => $name));
+            $totalScore = $gameObj->getTotalScore();
+            if ($gameObj->getTotalScore() > 63) {
+                $totalScore += 50;
+            }
+
+            //Check if current score is a new highscore and persist if so.
+            if ($totalScore > $player->getScore()) {
+                $player->setScore($totalScore);
+                $entityManager->persist($player);
+                $entityManager->flush();
+            }
+        }
     }
 }

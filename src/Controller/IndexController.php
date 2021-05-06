@@ -56,7 +56,7 @@ class IndexController extends AbstractController
     /**
      * @Route("/yatzy", name="yatzy_index")
      */
-    public function yatzy(Request $request): Response
+    public function yatzy(): Response
     {
         return $this->redirectToRoute('yatzy_play');
     }
