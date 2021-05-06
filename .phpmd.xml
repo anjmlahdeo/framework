@@ -13,6 +13,10 @@
     <exclude-pattern>cache</exclude-pattern>
     <exclude-pattern>htdocs</exclude-pattern>
     <exclude-pattern>vendor</exclude-pattern>
+    <exclude-pattern>migrations</exclude-pattern>
+    <exclude-pattern>Entity</exclude-pattern>
+    <exclude-pattern>Type</exclude-pattern>
+    <exclude-pattern>Kernel</exclude-pattern>
 
     <rule ref="rulesets/design.xml" />
     <rule ref="rulesets/cleancode.xml" />
