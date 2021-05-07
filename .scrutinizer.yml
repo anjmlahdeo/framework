@@ -5,7 +5,7 @@ build:
     coverage:
       tests:
         override:
-          - command: ./run-my-tests
+          - command: make test
             coverage:
               file: build/coverage.xml
               format: clover
