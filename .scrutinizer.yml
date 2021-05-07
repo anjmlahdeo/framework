@@ -7,7 +7,7 @@ build:
         override:
           - command: make test
             coverage:
-              file: coverage.xml   # <- Set this to where we find the coverage data.
+              file: build/coverage  # <- Set this to where we find the coverage data.
                                           #    The path is relative to the current directory.
               format: clover
     analysis:
