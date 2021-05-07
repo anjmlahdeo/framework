@@ -1,4 +1,6 @@
 language: php
 php:
   - 7.4
-script: make install test
+env:
+  global:
+    - XDEBUG_MODE=coverage
