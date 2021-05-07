@@ -1,4 +1,6 @@
-# MVC
+# MVC 
+
+[![Build Status](https://travis-ci.com/RobIsr/framework.svg?branch=main)](https://travis-ci.com/RobIsr/framework)
 
 Om detta repo:
 ==============
