@@ -1,6 +1,0 @@
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Form/Type/GameType.php:15	Avoid unused parameters such as '$options'.
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Form/Type/ResetType.php:12	Avoid unused parameters such as '$options'.
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Form/Type/RollType.php:12	Avoid unused parameters such as '$options'.
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Form/Type/StopType.php:12	Avoid unused parameters such as '$options'.
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Kernel.php:14	Avoid assigning values to variables in if clauses and the like (line '22', column '27').
-/Users/robertisraelsson/dbwebb-kurser/mvc/me/framework/src/Kernel.php:27	Avoid assigning values to variables in if clauses and the like (line '34', column '27').
