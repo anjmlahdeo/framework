@@ -7,9 +7,11 @@ build:
         override:
           - command: make test
             coverage:
-              file: build/coverage.xml
+              file: coverage.xml   # <- Set this to where we find the coverage data.
+                                          #    The path is relative to the current directory.
               format: clover
     analysis:
       tests:
         override:
+          # Add the respective Scrutinizer analysis for your language like
           - php-scrutinizer-run
