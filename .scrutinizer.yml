@@ -2,8 +2,14 @@ build:
   environment:
         php: 7.4.16
   nodes:
+    coverage:
+      tests:
+        override:
+          - command: ./run-my-tests
+            coverage:
+              file: build/coverage.xml
+              format: clover
     analysis:
       tests:
         override:
-          # Add the respective Scrutinizer analysis for your language like
           - php-scrutinizer-run
